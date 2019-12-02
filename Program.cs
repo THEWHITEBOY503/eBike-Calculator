@@ -63,7 +63,7 @@ namespace eBike_calculator
             Console.WriteLine("Bike Range: " + range + "Mi");
             Console.WriteLine("Remaining Battery: " + BatteryPercent + "%");
             Console.WriteLine("Charger amperage: " + ChargerAmps + "A");
-            Console.WriteLine("Time to fully charge: " + ChargingTime + "H");
+            Console.WriteLine("Time to fully charge: " + ChargingTime + "H (" + (ChargingTime * 60) + "M)");
             Console.WriteLine("Power used: " + PowerUsed + "A");
             Console.WriteLine("Power remaining: " + PowerRemaining + "Ah");
             Console.WriteLine("Est. traveled distance: " + RangeUsed + "Mi");
