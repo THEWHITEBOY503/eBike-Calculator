@@ -50,7 +50,7 @@ namespace eBike_calculator
             ChargerAmps = Convert.ToDouble(Console.ReadLine());
             Console.Write("Enter your battery % remaining ");
             BatteryPercent = Convert.ToDouble(Console.ReadLine());
-            ChargingTime = (Amperage - ((Amperage / 100) * BatteryPercent));
+            ChargingTime = ((Amperage - ((Amperage / 100) * BatteryPercent)) / ChargerAmps;
             PowerUsed = (Amperage - ((Amperage / 100) * BatteryPercent));
             PowerRemaining = ((Amperage / 100) * BatteryPercent);
             RangeRemaining = ((range / 100) * BatteryPercent);
