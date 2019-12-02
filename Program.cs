@@ -23,6 +23,14 @@ namespace eBike_calculator
         private static double PowerRemaining;
         private static double RangeRemaining;
         private static double RangeUsed;
+        private static double AfterMenu;
+        private static double ChargingMinutes;
+        private static double GainedPower;
+        private static double NewPower;
+        private static double AmpPerPercent;
+        private static double NewPercentage;
+        private static double AfterLoss;
+        private static double TimeLeft;
         static void Main(string[] args)
         {
             Console.Write("Enter your battery voltage ");
@@ -68,8 +76,28 @@ namespace eBike_calculator
             Console.WriteLine("Power remaining: " + PowerRemaining + "Ah");
             Console.WriteLine("Est. traveled distance: " + RangeUsed + "Mi");
             Console.WriteLine("Range remaining: " + RangeRemaining + "Mi");
-            Console.WriteLine("Press any key, then enter to exit.");
-            Console.ReadLine();
+            Console.WriteLine("");
+            Console.WriteLine("Select an option:");
+            Console.WriteLine("1) Recharging calculator");
+            AfterMenu = Convert.ToDouble(Console.ReadLine());
+            if (AfterMenu == 1) 
+            {
+                Console.Write("How many minutes are you charging for? ");
+                ChargingMinutes = Convert.ToDouble(Console.ReadLine());
+                GainedPower = ((ChargerAmps / 60) * ChargingMinutes);
+                NewPower = (PowerRemaining + GainedPower);
+                // This line is for efficiency loss, if you don't wanna include that, remove the line and change all instances of AfterLoss below to NewPower
+                AfterLoss = (NewPower * 0.95);
+                AmpPerPercent = (Amperage / 100);
+                NewPercentage = (AfterLoss / AmpPerPercent);
+                TimeLeft = ((Amperage - ((Amperage / 100) * NewPercentage)) / ChargerAmps);
+                Console.WriteLine("After charging for " + ChargingMinutes + "M:");
+                Console.WriteLine(BatteryPercent + "% -> " + NewPercentage + "%");
+                Console.WriteLine(PowerRemaining + "A -> " + AfterLoss + "A");
+                Console.WriteLine("Time left to fully charge: " + TimeLeft + "H (" + (TimeLeft * 60) + "M)");
+                Console.ReadLine();
+
+            }
 
 
 
