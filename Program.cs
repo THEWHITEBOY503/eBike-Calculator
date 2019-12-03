@@ -12,7 +12,6 @@ namespace eBike_calculator
         private static double Amperage;
         private static double WattHours;
         private static double range;
-        private static double percentage;
         private static double WattHoursPerMile;
         private static double yn1;
         private static double MotorWatts;
@@ -31,6 +30,11 @@ namespace eBike_calculator
         private static double NewPercentage;
         private static double AfterLoss;
         private static double TimeLeft;
+        private static double AddedPercent;
+        private static double RangeAdded;
+        private static double RangePerPercent;
+        private static double NewRange;
+        private static double RangePerAmp;
         static void Main(string[] args)
         {
             Console.Write("Enter your battery voltage ");
@@ -79,6 +83,7 @@ namespace eBike_calculator
             Console.WriteLine("");
             Console.WriteLine("Select an option:");
             Console.WriteLine("1) Recharging calculator");
+            Console.WriteLine("Hit any other number to exit");
             AfterMenu = Convert.ToDouble(Console.ReadLine());
             if (AfterMenu == 1) 
             {
@@ -87,14 +92,19 @@ namespace eBike_calculator
                 GainedPower = ((ChargerAmps / 60) * ChargingMinutes);
                 NewPower = (PowerRemaining + GainedPower);
                 // This line is for efficiency loss, if you don't wanna include that, remove the line and change all instances of AfterLoss below to NewPower
-                AfterLoss = (NewPower * 0.95);
+                AfterLoss = (NewPower * 0.999);
                 AmpPerPercent = (Amperage / 100);
                 NewPercentage = (AfterLoss / AmpPerPercent);
+                AddedPercent = (NewPercentage - (BatteryPercent));
                 TimeLeft = ((Amperage - ((Amperage / 100) * NewPercentage)) / ChargerAmps);
+                RangePerAmp = (range / Amperage);
+                RangeAdded = (RangePerAmp * GainedPower);
+                NewRange = (RangePerAmp * NewPower);
                 Console.WriteLine("After charging for " + ChargingMinutes + "M:");
-                Console.WriteLine(BatteryPercent + "% -> " + NewPercentage + "%");
-                Console.WriteLine(PowerRemaining + "A -> " + AfterLoss + "A");
-                Console.WriteLine("Time left to fully charge: " + TimeLeft + "H (" + (TimeLeft * 60) + "M)");
+                Console.WriteLine(BatteryPercent + "% -> " + NewPercentage + "% (+" + AddedPercent + "%)");
+                Console.WriteLine(PowerRemaining + "A -> " + AfterLoss + "A (+" + GainedPower + "A) ");
+                Console.WriteLine("Time left to fully charge: " + TimeLeft + "H (" + (TimeLeft * 60) + "M)  (-" + ((ChargingTime*60) - (TimeLeft*60)) + "M)");
+                Console.WriteLine("Range: " + NewRange + "Mi (+" + RangeAdded + "Mi)");
                 Console.ReadLine();
 
             }
