@@ -35,6 +35,10 @@ namespace eBike_calculator
         private static double RangePerPercent;
         private static double NewRange;
         private static double RangePerAmp;
+        private static double MilesPerHourCharging;
+        private static double NewChargerAmps;
+        private static double NewChargingTime;
+        private static double NewChargingSpeed;
         static void Main(string[] args)
         {
             Console.Write("Enter your battery voltage ");
@@ -67,6 +71,7 @@ namespace eBike_calculator
             PowerRemaining = ((Amperage / 100) * BatteryPercent);
             RangeRemaining = ((range / 100) * BatteryPercent);
             RangeUsed = (range - ((range / 100) * BatteryPercent));
+            MilesPerHourCharging = ((range / Amperage) * ChargerAmps);
             Console.Clear();
             Console.WriteLine("Battery Voltage: " + Voltage + "V");
             Console.WriteLine("Battery Amp Hours: " + Amperage + "A");
@@ -76,6 +81,7 @@ namespace eBike_calculator
             Console.WriteLine("Remaining Battery: " + BatteryPercent + "%");
             Console.WriteLine("Charger amperage: " + ChargerAmps + "A");
             Console.WriteLine("Time to fully charge: " + ChargingTime + "H (" + (ChargingTime * 60) + "M)");
+            Console.WriteLine("Charging at " + MilesPerHourCharging + "MPH");
             Console.WriteLine("Power used: " + PowerUsed + "A");
             Console.WriteLine("Power remaining: " + PowerRemaining + "Ah");
             Console.WriteLine("Est. traveled distance: " + RangeUsed + "Mi");
@@ -83,6 +89,7 @@ namespace eBike_calculator
             Console.WriteLine("");
             Console.WriteLine("Select an option:");
             Console.WriteLine("1) Recharging calculator");
+            Console.WriteLine("2) Compare charging rates");
             Console.WriteLine("Hit any other number to exit");
             AfterMenu = Convert.ToDouble(Console.ReadLine());
             if (AfterMenu == 1) 
@@ -107,6 +114,18 @@ namespace eBike_calculator
                 Console.WriteLine("Range: " + NewRange + "Mi (+" + RangeAdded + "Mi)");
                 Console.ReadLine();
 
+            }
+            if (AfterMenu == 2)
+            {
+                Console.Write("Enter how many amps the charger you want to compare supplies: ");
+                NewChargerAmps = Convert.ToDouble(Console.ReadLine());
+                NewChargingTime = ((Amperage - ((Amperage / 100) * BatteryPercent)) / NewChargerAmps);
+                NewChargingSpeed = ((range / Amperage) * NewChargerAmps);
+                Console.WriteLine("Time to fully charge: " + ChargingTime + "H (" + (ChargingTime * 60) + "M) -> " + NewChargingTime + "H (" + (NewChargingTime * 60) + "M)");
+                Console.WriteLine("Time difference: " +  (ChargingTime - NewChargingTime) + "H (" + ((ChargingTime - NewChargingTime)*60) + "M)");
+                Console.WriteLine("Charging speed: " + MilesPerHourCharging + "MPH -> " + NewChargingSpeed + "MPH");
+                Console.WriteLine("Speed difference: " + (NewChargingSpeed - MilesPerHourCharging + "MPH"));
+                Console.ReadLine();
             }
 
 
