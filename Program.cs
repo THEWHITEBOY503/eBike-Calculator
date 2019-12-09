@@ -39,6 +39,9 @@ namespace eBike_calculator
         private static double NewChargerAmps;
         private static double NewChargingTime;
         private static double NewChargingSpeed;
+        private static double TripDistance;
+        private static double TripChargingTime;
+        private static double TripMilesDifference;
         static void Main(string[] args)
         {
             Console.Write("Enter your battery voltage ");
@@ -90,6 +93,7 @@ namespace eBike_calculator
             Console.WriteLine("Select an option:");
             Console.WriteLine("1) Recharging calculator");
             Console.WriteLine("2) Compare charging rates");
+            Console.WriteLine("3) Trip/Distance planner");
             Console.WriteLine("Hit any other number to exit");
             AfterMenu = Convert.ToDouble(Console.ReadLine());
             if (AfterMenu == 1) 
@@ -125,6 +129,32 @@ namespace eBike_calculator
                 Console.WriteLine("Time difference: " +  (ChargingTime - NewChargingTime) + "H (" + ((ChargingTime - NewChargingTime)*60) + "M)");
                 Console.WriteLine("Charging speed: " + MilesPerHourCharging + "MPH -> " + NewChargingSpeed + "MPH");
                 Console.WriteLine("Speed difference: " + (NewChargingSpeed - MilesPerHourCharging + "MPH"));
+                Console.ReadLine();
+            }
+            if (AfterMenu == 3)
+            {
+                Console.Write("Enter the total distance of your trip (mi): ");
+                TripDistance = Convert.ToDouble(Console.ReadLine());
+                TripMilesDifference = (TripDistance - RangeRemaining);
+                if (TripDistance > RangeRemaining)
+                {
+                    TripChargingTime = (TripMilesDifference / MilesPerHourCharging);
+                    Console.WriteLine("You will need to charge for " + TripChargingTime + "H (" + (TripChargingTime * 60) + "M) to get to your destination.");
+                    Console.WriteLine("Round Trip: " + (((TripDistance * 2) - RangeRemaining) / MilesPerHourCharging) + "H (" + ((((TripDistance * 2) - RangeRemaining) / MilesPerHourCharging)*60) + "M) charging needed");
+                    
+                }
+                if (TripDistance < RangeRemaining)
+                {
+                    Console.WriteLine("You should have enough range to get to your destination.");
+                    if ((TripDistance*2) > RangeRemaining)
+                    {
+                        Console.WriteLine("Round Trip: " + (((TripDistance * 2) - RangeRemaining) / MilesPerHourCharging) + "H (" + ((((TripDistance * 2) - RangeRemaining) / MilesPerHourCharging) * 60) + "M) charging needed");
+                    }
+                    if ((TripDistance*2) < RangeRemaining)
+                    {
+                        Console.WriteLine("You should have enough range to get back to make a round trip.");
+                    }
+                }
                 Console.ReadLine();
             }
 
