@@ -42,6 +42,9 @@ namespace eBike_calculator
         private static double TripDistance;
         private static double TripChargingTime;
         private static double TripMilesDifference;
+        private static double AvgSpeed;
+        private static double TimeElapsed1;
+        private static double Hours1;
         static void Main(string[] args)
         {
             Console.Write("Enter your battery voltage ");
@@ -74,7 +77,7 @@ namespace eBike_calculator
             PowerRemaining = ((Amperage / 100) * BatteryPercent);
             RangeRemaining = ((range / 100) * BatteryPercent);
             RangeUsed = (range - ((range / 100) * BatteryPercent));
-            MilesPerHourCharging = ((range / Amperage) * ChargerAmps);
+            MilesPerHourCharging = Math.Round(((range / Amperage) * ChargerAmps), 2);
             Console.Clear();
             Console.WriteLine("Battery Voltage: " + Voltage + "V");
             Console.WriteLine("Battery Amp Hours: " + Amperage + "A");
@@ -135,12 +138,21 @@ namespace eBike_calculator
             {
                 Console.Write("Enter the total distance of your trip (mi): ");
                 TripDistance = Convert.ToDouble(Console.ReadLine());
+                Console.Write("Enter your average speed (mph): ");
+                AvgSpeed = Convert.ToDouble(Console.ReadLine());
+                TimeElapsed1 = Math.Round((((range * 2.23) / AvgSpeed)*60), 0);
+                while (TimeElapsed1 > 60)
+                {
+                    Hours1++;
+                    TimeElapsed1 = (TimeElapsed1 - 60);
+                }
                 TripMilesDifference = (TripDistance - RangeRemaining);
                 if (TripDistance > RangeRemaining)
                 {
-                    TripChargingTime = (TripMilesDifference / MilesPerHourCharging);
-                    Console.WriteLine("You will need to charge for " + TripChargingTime + "H (" + (TripChargingTime * 60) + "M) to get to your destination.");
-                    Console.WriteLine("Round Trip: " + (((TripDistance * 2) - RangeRemaining) / MilesPerHourCharging) + "H (" + ((((TripDistance * 2) - RangeRemaining) / MilesPerHourCharging)*60) + "M) charging needed");
+                    TripChargingTime = Math.Round((TripMilesDifference / MilesPerHourCharging), 3);
+                    Console.WriteLine("Driving time on 1 full charge: " + Hours1 + ":" + TimeElapsed1);
+                    Console.WriteLine("You will need to charge for " + TripChargingTime + "H (" + Math.Round((TripChargingTime * 60), 0) + "M) to get to your destination.");
+                    Console.WriteLine("Round Trip: " + Math.Round((((TripDistance * 2) - RangeRemaining) / MilesPerHourCharging), 2) + "H (" + Math.Round(((((TripDistance * 2) - RangeRemaining) / MilesPerHourCharging)*60), 0) + "M) charging needed");
                     
                 }
                 if (TripDistance < RangeRemaining)
@@ -148,7 +160,7 @@ namespace eBike_calculator
                     Console.WriteLine("You should have enough range to get to your destination.");
                     if ((TripDistance*2) > RangeRemaining)
                     {
-                        Console.WriteLine("Round Trip: " + (((TripDistance * 2) - RangeRemaining) / MilesPerHourCharging) + "H (" + ((((TripDistance * 2) - RangeRemaining) / MilesPerHourCharging) * 60) + "M) charging needed");
+                        Console.WriteLine("Round Trip: " + Math.Round((((TripDistance * 2) - RangeRemaining) / MilesPerHourCharging), 2) + "H (" + Math.Round(((((TripDistance * 2) - RangeRemaining) / MilesPerHourCharging) * 60), 0) + "M) charging needed");
                     }
                     if ((TripDistance*2) < RangeRemaining)
                     {
