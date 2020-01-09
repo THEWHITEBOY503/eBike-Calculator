@@ -45,6 +45,11 @@ namespace eBike_calculator
         private static double AvgSpeed;
         private static double TimeElapsed1;
         private static double Hours1;
+        private static double PricePerkWh;
+        private static double ChargingCost;
+        private static double FullChargingCost;
+        private static double WattHoursRemaining;
+        private static double WattHoursUsed;
         static void Main(string[] args)
         {
             Console.Write("Enter your battery voltage ");
@@ -72,12 +77,18 @@ namespace eBike_calculator
             ChargerAmps = Convert.ToDouble(Console.ReadLine());
             Console.Write("Enter your battery % remaining ");
             BatteryPercent = Convert.ToDouble(Console.ReadLine());
+            Console.Write("Enter your home/charging location's $/kWh: ");
+            PricePerkWh = Convert.ToDouble(Console.ReadLine());
             ChargingTime = ((Amperage - ((Amperage / 100) * BatteryPercent)) / ChargerAmps);
             PowerUsed = (Amperage - ((Amperage / 100) * BatteryPercent));
             PowerRemaining = ((Amperage / 100) * BatteryPercent);
             RangeRemaining = ((range / 100) * BatteryPercent);
             RangeUsed = (range - ((range / 100) * BatteryPercent));
             MilesPerHourCharging = Math.Round(((range / Amperage) * ChargerAmps), 2);
+            WattHoursRemaining = (PowerRemaining * Voltage);
+            WattHoursUsed = (PowerUsed * Voltage);
+            ChargingCost = Math.Round(((WattHoursUsed / 1000) * PricePerkWh), 3);
+            FullChargingCost = Math.Round(((WattHours / 1000) * PricePerkWh), 3);
             Console.Clear();
             Console.WriteLine("Battery Voltage: " + Voltage + "V");
             Console.WriteLine("Battery Amp Hours: " + Amperage + "A");
@@ -92,7 +103,231 @@ namespace eBike_calculator
             Console.WriteLine("Power remaining: " + PowerRemaining + "Ah");
             Console.WriteLine("Est. traveled distance: " + RangeUsed + "Mi");
             Console.WriteLine("Range remaining: " + RangeRemaining + "Mi");
-            Console.WriteLine("");
+            Console.WriteLine("Cost to charge: $" + ChargingCost);
+            Console.WriteLine("Cost to fully charge: $" + FullChargingCost);
+            if (BatteryPercent <= 100 && BatteryPercent > 95)
+            {
+                Console.WriteLine("╔════════════════════╗");
+                Console.WriteLine("║████████████████████╚╗");
+                Console.WriteLine("║████████████████████ ║");
+                Console.WriteLine("║████████████████████╔╝");
+                Console.WriteLine("╚════════════════════╝");
+            }
+            else
+            {
+                if (BatteryPercent <= 95 && BatteryPercent > 90)
+                {
+                    Console.WriteLine("╔════════════════════╗");
+                    Console.WriteLine("║███████████████████ ╚╗");
+                    Console.WriteLine("║███████████████████  ║");
+                    Console.WriteLine("║███████████████████ ╔╝");
+                    Console.WriteLine("╚════════════════════╝");
+                }
+                else
+                {
+                    if (BatteryPercent <= 90 && BatteryPercent > 85)
+                    {
+                        Console.WriteLine("╔════════════════════╗");
+                        Console.WriteLine("║██████████████████  ╚╗");
+                        Console.WriteLine("║██████████████████   ║");
+                        Console.WriteLine("║██████████████████  ╔╝");
+                        Console.WriteLine("╚════════════════════╝");
+                    }
+                    else
+                    {
+                        if (BatteryPercent <= 85 && BatteryPercent > 80)
+                        {
+                            Console.WriteLine("╔════════════════════╗");
+                            Console.WriteLine("║█████████████████   ╚╗");
+                            Console.WriteLine("║█████████████████    ║");
+                            Console.WriteLine("║█████████████████   ╔╝");
+                            Console.WriteLine("╚════════════════════╝");
+                        }
+                        else
+                        {
+                            if (BatteryPercent <= 80 && BatteryPercent > 75)
+                            {
+                                Console.WriteLine("╔════════════════════╗");
+                                Console.WriteLine("║████████████████    ╚╗");
+                                Console.WriteLine("║████████████████     ║");
+                                Console.WriteLine("║████████████████    ╔╝");
+                                Console.WriteLine("╚════════════════════╝");
+                            }
+                            else
+                            {
+                                if (BatteryPercent <= 75 && BatteryPercent > 70)
+                                {
+                                    Console.WriteLine("╔════════════════════╗");
+                                    Console.WriteLine("║███████████████     ╚╗");
+                                    Console.WriteLine("║███████████████      ║");
+                                    Console.WriteLine("║███████████████     ╔╝");
+                                    Console.WriteLine("╚════════════════════╝");
+                                }
+                                else
+                                {
+
+
+                                    if (BatteryPercent <= 70 && BatteryPercent > 65)
+                                    {
+                                        Console.WriteLine("╔════════════════════╗");
+                                        Console.WriteLine("║██████████████      ╚╗");
+                                        Console.WriteLine("║██████████████       ║");
+                                        Console.WriteLine("║██████████████      ╔╝");
+                                        Console.WriteLine("╚════════════════════╝");
+                                    }
+                                    else
+                                    {
+                                        if (BatteryPercent <= 65 && BatteryPercent > 60)
+                                        {
+                                            Console.WriteLine("╔════════════════════╗");
+                                            Console.WriteLine("║█████████████       ╚╗");
+                                            Console.WriteLine("║█████████████        ║");
+                                            Console.WriteLine("║█████████████       ╔╝");
+                                            Console.WriteLine("╚════════════════════╝");
+                                        }
+                                        else
+                                        {
+                                            if (BatteryPercent <= 60 && BatteryPercent > 55)
+                                            {
+                                                Console.WriteLine("╔════════════════════╗");
+                                                Console.WriteLine("║████████████        ╚╗");
+                                                Console.WriteLine("║████████████         ║");
+                                                Console.WriteLine("║████████████        ╔╝");
+                                                Console.WriteLine("╚════════════════════╝");
+                                            }
+                                            else
+                                            {
+                                                if (BatteryPercent <= 55 && BatteryPercent > 550)
+                                                {
+                                                    Console.WriteLine("╔════════════════════╗");
+                                                    Console.WriteLine("║███████████         ╚╗");
+                                                    Console.WriteLine("║███████████          ║");
+                                                    Console.WriteLine("║███████████         ╔╝");
+                                                    Console.WriteLine("╚════════════════════╝");
+                                                }
+                                                else
+                                                {
+
+
+                                                    {
+                                                        if (BatteryPercent <= 50 && BatteryPercent > 45)
+                                                        {
+                                                            Console.WriteLine("╔════════════════════╗");
+                                                            Console.WriteLine("║██████████          ╚╗");
+                                                            Console.WriteLine("║██████████           ║");
+                                                            Console.WriteLine("║██████████          ╔╝");
+                                                            Console.WriteLine("╚════════════════════╝");
+                                                        }
+                                                        else
+                                                        {
+                                                            if (BatteryPercent <= 45 && BatteryPercent > 40)
+                                                            {
+                                                                Console.WriteLine("╔════════════════════╗");
+                                                                Console.WriteLine("║█████████           ╚╗");
+                                                                Console.WriteLine("║█████████            ║");
+                                                                Console.WriteLine("║█████████           ╔╝");
+                                                                Console.WriteLine("╚════════════════════╝");
+                                                            }
+                                                            else
+                                                            {
+                                                                if (BatteryPercent <= 40 && BatteryPercent > 35)
+                                                                {
+                                                                    Console.WriteLine("╔════════════════════╗");
+                                                                    Console.WriteLine("║████████            ╚╗");
+                                                                    Console.WriteLine("║████████            ║");
+                                                                    Console.WriteLine("║████████            ╔╝");
+                                                                    Console.WriteLine("╚════════════════════╝");
+                                                                }
+                                                                else
+                                                                {
+                                                                    if (BatteryPercent <= 35 && BatteryPercent > 30)
+                                                                    {
+                                                                        Console.WriteLine("╔════════════════════╗");
+                                                                        Console.WriteLine("║███████             ╚╗");
+                                                                        Console.WriteLine("║███████              ║");
+                                                                        Console.WriteLine("║███████             ╔╝");
+                                                                        Console.WriteLine("╚════════════════════╝");
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        if (BatteryPercent <= 30 && BatteryPercent > 25)
+                                                                        {
+                                                                            Console.WriteLine("╔════════════════════╗");
+                                                                            Console.WriteLine("║██████              ╚╗");
+                                                                            Console.WriteLine("║██████               ║");
+                                                                            Console.WriteLine("║██████              ╔╝");
+                                                                            Console.WriteLine("╚════════════════════╝");
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            if (BatteryPercent <= 25 && BatteryPercent > 20)
+                                                                            {
+                                                                                Console.WriteLine("╔════════════════════╗");
+                                                                                Console.WriteLine("║█████               ╚╗");
+                                                                                Console.WriteLine("║█████                ║");
+                                                                                Console.WriteLine("║█████               ╔╝");
+                                                                                Console.WriteLine("╚════════════════════╝");
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                if (BatteryPercent <= 20 && BatteryPercent > 15)
+                                                                                {
+                                                                                    Console.WriteLine("╔════════════════════╗");
+                                                                                    Console.WriteLine("║████                ╚╗");
+                                                                                    Console.WriteLine("║████                 ║");
+                                                                                    Console.WriteLine("║████                ╔╝");
+                                                                                    Console.WriteLine("╚════════════════════╝");
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    if (BatteryPercent <= 15 && BatteryPercent > 10)
+                                                                                    {
+                                                                                        Console.WriteLine("╔════════════════════╗");
+                                                                                        Console.WriteLine("║███                 ╚╗");
+                                                                                        Console.WriteLine("║███                  ║");
+                                                                                        Console.WriteLine("║███                 ╔╝");
+                                                                                        Console.WriteLine("╚════════════════════╝");
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        if (BatteryPercent <= 10 && BatteryPercent > 5)
+                                                                                        {
+                                                                                            Console.WriteLine("╔════════════════════╗");
+                                                                                            Console.WriteLine("║██                  ╚╗");
+                                                                                            Console.WriteLine("║██                   ║");
+                                                                                            Console.WriteLine("║██                  ╔╝");
+                                                                                            Console.WriteLine("╚════════════════════╝");
+                                                                                        }
+                                                                                        else
+                                                                                        {
+                                                                                            if (BatteryPercent <= 5 && BatteryPercent > 1)
+                                                                                            {
+                                                                                                Console.WriteLine("╔════════════════════╗");
+                                                                                                Console.WriteLine("║█                   ╚╗");
+                                                                                                Console.WriteLine("║█                    ║ ");
+                                                                                                Console.WriteLine("║█                   ╔╝");
+                                                                                                Console.WriteLine("╚════════════════════╝");
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
             Console.WriteLine("Select an option:");
             Console.WriteLine("1) Recharging calculator");
             Console.WriteLine("2) Compare charging rates");
