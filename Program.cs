@@ -197,7 +197,7 @@ namespace eBike_calculator
                                             }
                                             else
                                             {
-                                                if (BatteryPercent <= 55 && BatteryPercent > 550)
+                                                if (BatteryPercent <= 55 && BatteryPercent > 50)
                                                 {
                                                     Console.WriteLine("╔════════════════════╗");
                                                     Console.WriteLine("║███████████         ╚╗");
