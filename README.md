@@ -16,12 +16,13 @@ Input:
 ```
 Enter your battery voltage 36
 Enter your battery Amp Hours 10.5
-Calculated battery Watt Hours: 378
+Battery Watt Hours: 378
 Do you know your battery's Wh/Mile rate? (1 for yes, 0 for no) 0
 Please enter your range (miles) 20
 Your Wh/Mi rate is 18.9
-Enter your charger's amperage 2
+Enter your charger's amperage 5
 Enter your battery % remaining 75
+Enter your home/charging location's $/kWh: (Enter 0 to skip) 0.087
 ```
 
 Output: 
@@ -32,9 +33,9 @@ Battery Watt Hours: 378Wh
 Bike Watt Hours/mi: 18.9Wh/Mi
 Bike Range: 20Mi
 Remaining Battery: 75%
-Charger amperage: 2A
-Time to fully charge: 1.3125H (78.75M)
-Charging at 3.81MPH
+Charger amperage: 5A
+Time to fully charge: 0.525H (31.5M)
+Charging at 9.52MPH
 Power used: 2.625A
 Power remaining: 7.875Ah
 Est. traveled distance: 5Mi
@@ -50,6 +51,7 @@ Select an option:
 1) Recharging calculator
 2) Compare charging rates
 3) Trip/Distance planner
+4) Charging timer
 Hit any other number to exit
 ```
 
@@ -101,4 +103,17 @@ Output:
 ```
 You should have enough range to get to your destination.
 Round Trip: 1.8375H (110.25M) charging needed
+```
+
+
+### Charger Timer
+Track your charging session
+
+Output:
+```
+Charge added: 2.75Wh
+Charging speed: 9.52MPH
+Range added: 0.15Mi
+76%   (+1%)
+Range: 15.15Mi
 ```

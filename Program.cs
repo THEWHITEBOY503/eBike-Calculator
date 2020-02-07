@@ -50,6 +50,15 @@ namespace eBike_calculator
         private static double FullChargingCost;
         private static double WattHoursRemaining;
         private static double WattHoursUsed;
+        private static double ChargeAdded;
+        private static double ChargePerSecond;
+        private static double Seconds;
+        private static double x;
+        private static double NewAmp;
+        private static double WhAdded;
+        private static double NewWh;
+        private static double NewRangeCharging;
+        private static double PercentAdded;
         static void Main(string[] args)
         {
             Console.Write("Enter your battery voltage ");
@@ -77,7 +86,7 @@ namespace eBike_calculator
             ChargerAmps = Convert.ToDouble(Console.ReadLine());
             Console.Write("Enter your battery % remaining ");
             BatteryPercent = Convert.ToDouble(Console.ReadLine());
-            Console.Write("Enter your home/charging location's $/kWh: ");
+            Console.Write("Enter your home/charging location's $/kWh: (Enter 0 to skip) $");
             PricePerkWh = Convert.ToDouble(Console.ReadLine());
             ChargingTime = ((Amperage - ((Amperage / 100) * BatteryPercent)) / ChargerAmps);
             PowerUsed = (Amperage - ((Amperage / 100) * BatteryPercent));
@@ -197,7 +206,7 @@ namespace eBike_calculator
                                             }
                                             else
                                             {
-                                                if (BatteryPercent <= 55 && BatteryPercent > 50)
+                                                if (BatteryPercent <= 55 && BatteryPercent > 550)
                                                 {
                                                     Console.WriteLine("╔════════════════════╗");
                                                     Console.WriteLine("║███████████         ╚╗");
@@ -332,9 +341,10 @@ namespace eBike_calculator
             Console.WriteLine("1) Recharging calculator");
             Console.WriteLine("2) Compare charging rates");
             Console.WriteLine("3) Trip/Distance planner");
+            Console.WriteLine("4) Charging timer");
             Console.WriteLine("Hit any other number to exit");
             AfterMenu = Convert.ToDouble(Console.ReadLine());
-            if (AfterMenu == 1) 
+            if (AfterMenu == 1)
             {
                 Console.Write("How many minutes are you charging for? ");
                 ChargingMinutes = Convert.ToDouble(Console.ReadLine());
@@ -352,7 +362,7 @@ namespace eBike_calculator
                 Console.WriteLine("After charging for " + ChargingMinutes + "M:");
                 Console.WriteLine(BatteryPercent + "% -> " + NewPercentage + "% (+" + AddedPercent + "%)");
                 Console.WriteLine(PowerRemaining + "A -> " + AfterLoss + "A (+" + GainedPower + "A) ");
-                Console.WriteLine("Time left to fully charge: " + TimeLeft + "H (" + (TimeLeft * 60) + "M)  (-" + ((ChargingTime*60) - (TimeLeft*60)) + "M)");
+                Console.WriteLine("Time left to fully charge: " + TimeLeft + "H (" + (TimeLeft * 60) + "M)  (-" + ((ChargingTime * 60) - (TimeLeft * 60)) + "M)");
                 Console.WriteLine("Range: " + NewRange + "Mi (+" + RangeAdded + "Mi)");
                 Console.ReadLine();
 
@@ -364,7 +374,7 @@ namespace eBike_calculator
                 NewChargingTime = ((Amperage - ((Amperage / 100) * BatteryPercent)) / NewChargerAmps);
                 NewChargingSpeed = ((range / Amperage) * NewChargerAmps);
                 Console.WriteLine("Time to fully charge: " + ChargingTime + "H (" + (ChargingTime * 60) + "M) -> " + NewChargingTime + "H (" + (NewChargingTime * 60) + "M)");
-                Console.WriteLine("Time difference: " +  (ChargingTime - NewChargingTime) + "H (" + ((ChargingTime - NewChargingTime)*60) + "M)");
+                Console.WriteLine("Time difference: " + (ChargingTime - NewChargingTime) + "H (" + ((ChargingTime - NewChargingTime) * 60) + "M)");
                 Console.WriteLine("Charging speed: " + MilesPerHourCharging + "MPH -> " + NewChargingSpeed + "MPH");
                 Console.WriteLine("Speed difference: " + (NewChargingSpeed - MilesPerHourCharging + "MPH"));
                 Console.ReadLine();
@@ -375,7 +385,7 @@ namespace eBike_calculator
                 TripDistance = Convert.ToDouble(Console.ReadLine());
                 Console.Write("Enter your average speed (mph): ");
                 AvgSpeed = Convert.ToDouble(Console.ReadLine());
-                TimeElapsed1 = Math.Round((((range * 2.23) / AvgSpeed)*60), 0);
+                TimeElapsed1 = Math.Round((((range * 2.23) / AvgSpeed) * 60), 0);
                 while (TimeElapsed1 > 60)
                 {
                     Hours1++;
@@ -387,26 +397,69 @@ namespace eBike_calculator
                     TripChargingTime = Math.Round((TripMilesDifference / MilesPerHourCharging), 3);
                     Console.WriteLine("Driving time on 1 full charge: " + Hours1 + ":" + TimeElapsed1);
                     Console.WriteLine("You will need to charge for " + TripChargingTime + "H (" + Math.Round((TripChargingTime * 60), 0) + "M) to get to your destination.");
-                    Console.WriteLine("Round Trip: " + Math.Round((((TripDistance * 2) - RangeRemaining) / MilesPerHourCharging), 2) + "H (" + Math.Round(((((TripDistance * 2) - RangeRemaining) / MilesPerHourCharging)*60), 0) + "M) charging needed");
-                    
+                    Console.WriteLine("Round Trip: " + Math.Round((((TripDistance * 2) - RangeRemaining) / MilesPerHourCharging), 2) + "H (" + Math.Round(((((TripDistance * 2) - RangeRemaining) / MilesPerHourCharging) * 60), 0) + "M) charging needed");
+
                 }
                 if (TripDistance < RangeRemaining)
                 {
                     Console.WriteLine("You should have enough range to get to your destination.");
-                    if ((TripDistance*2) > RangeRemaining)
+                    if ((TripDistance * 2) > RangeRemaining)
                     {
                         Console.WriteLine("Round Trip: " + Math.Round((((TripDistance * 2) - RangeRemaining) / MilesPerHourCharging), 2) + "H (" + Math.Round(((((TripDistance * 2) - RangeRemaining) / MilesPerHourCharging) * 60), 0) + "M) charging needed");
                     }
-                    if ((TripDistance*2) < RangeRemaining)
+                    if ((TripDistance * 2) < RangeRemaining)
                     {
                         Console.WriteLine("You should have enough range to get back to make a round trip.");
                     }
                 }
                 Console.ReadLine();
             }
+            if (AfterMenu == 4)
+            {
+                Console.WriteLine("Please plug in your charger and push enter at the same time.");
+                Console.ReadLine();
+                double x = 1;
+                ChargePerSecond = ((ChargerAmps / 60) / 60);
+                while (x == 1)
+                {
+                    Console.Clear();
+                    Seconds++;
+                    ChargeAdded = (ChargePerSecond * Seconds);
+                    NewAmp = (PowerRemaining + ChargeAdded);
+                    WhAdded = Math.Round((ChargeAdded * Voltage), 2);
+                    RangeAdded = Math.Round((WhAdded / WattHoursPerMile), 2);
+                    NewRange = (RangeRemaining + RangeAdded);
+                    NewWh = (NewAmp * Voltage);
+                    NewPercentage = Math.Round((NewWh / (WattHours / 100)), 0);
+                    PercentAdded = (NewPercentage - BatteryPercent);
+                    if (NewPercentage >= 100)
+                    {
+                        x = 0;
+                    }
+                    NewRangeCharging = (RangeAdded + RangeRemaining);
+                    Console.WriteLine("Charge added: " + WhAdded + "Wh");
+                    Console.WriteLine("Charging speed: " + MilesPerHourCharging + "MPH");
+                    Console.WriteLine("Range added: " + RangeAdded + "Mi");
+                    Console.WriteLine(NewPercentage + "%   (+" + PercentAdded + "%)");
+                    Console.WriteLine("Range: " + NewRangeCharging + "Mi");
+                    System.Threading.Thread.Sleep(
+                    (int)System.TimeSpan.FromSeconds(1).TotalMilliseconds);
+                }
+                if (x == 0)
+                {
+                    Console.WriteLine("***********************************");
+                    Console.WriteLine("**                               **");
+                    Console.WriteLine("** C H A R G E   C O M P L E T E **");
+                    Console.WriteLine("**                               **");
+                    Console.WriteLine("***********************************");
+                    Console.WriteLine("");
+                    Console.WriteLine("Press enter to exit.");
+                    Console.ReadLine();
+                }
 
 
 
+            }
         }
     }
 }
