@@ -59,6 +59,11 @@ namespace eBike_calculator
         private static double NewWh;
         private static double NewRangeCharging;
         private static double PercentAdded;
+        private static double MinUntilFull1;
+        private static double MinUntilFull2;
+        private static double HUntilFull;
+        private static double DollarsPerWatt;
+        private static double LiveChargingCost; 
         static void Main(string[] args)
         {
             Console.Write("Enter your battery voltage ");
@@ -86,7 +91,7 @@ namespace eBike_calculator
             ChargerAmps = Convert.ToDouble(Console.ReadLine());
             Console.Write("Enter your battery % remaining ");
             BatteryPercent = Convert.ToDouble(Console.ReadLine());
-            Console.Write("Enter your home/charging location's $/kWh: (Enter 0 to skip) $");
+            Console.Write("Enter your home/charging location's $/kWh: (Enter 0 to skip) ");
             PricePerkWh = Convert.ToDouble(Console.ReadLine());
             ChargingTime = ((Amperage - ((Amperage / 100) * BatteryPercent)) / ChargerAmps);
             PowerUsed = (Amperage - ((Amperage / 100) * BatteryPercent));
@@ -98,6 +103,7 @@ namespace eBike_calculator
             WattHoursUsed = (PowerUsed * Voltage);
             ChargingCost = Math.Round(((WattHoursUsed / 1000) * PricePerkWh), 3);
             FullChargingCost = Math.Round(((WattHours / 1000) * PricePerkWh), 3);
+            DollarsPerWatt = (PricePerkWh / 1000);
             Console.Clear();
             Console.WriteLine("Battery Voltage: " + Voltage + "V");
             Console.WriteLine("Battery Amp Hours: " + Amperage + "A");
@@ -432,6 +438,34 @@ namespace eBike_calculator
                     NewWh = (NewAmp * Voltage);
                     NewPercentage = Math.Round((NewWh / (WattHours / 100)), 0);
                     PercentAdded = (NewPercentage - BatteryPercent);
+                    MinUntilFull1 = Math.Round((((range - NewRange) / MilesPerHourCharging) * 60), 0);
+                    LiveChargingCost = Math.Round(((DollarsPerWatt * WhAdded)*100), 2);
+                    if (MinUntilFull1 > 60)
+                    {
+                        MinUntilFull2 = (MinUntilFull1 - 60);
+                        HUntilFull = 1;
+                        if (MinUntilFull1 > 120)
+                        {
+                            MinUntilFull2 = (MinUntilFull1 - 120);
+                            HUntilFull = 2;
+                        }
+                        if (MinUntilFull1 > 180)
+                        {
+                            MinUntilFull2 = (MinUntilFull1 - 180);
+                            HUntilFull = 3;
+                        }
+                        if (MinUntilFull1 > 240)
+                        {
+                            MinUntilFull2 = (MinUntilFull1 - 240);
+                            HUntilFull = 4;
+                        }
+                    }
+                    else
+                    {
+                        MinUntilFull2 = MinUntilFull1;
+                        HUntilFull = 0;
+                    }
+                    
                     if (NewPercentage >= 100)
                     {
                         x = 0;
@@ -439,9 +473,10 @@ namespace eBike_calculator
                     NewRangeCharging = (RangeAdded + RangeRemaining);
                     Console.WriteLine("Charge added: " + WhAdded + "Wh");
                     Console.WriteLine("Charging speed: " + MilesPerHourCharging + "MPH");
-                    Console.WriteLine("Range added: " + RangeAdded + "Mi");
                     Console.WriteLine(NewPercentage + "%   (+" + PercentAdded + "%)");
-                    Console.WriteLine("Range: " + NewRangeCharging + "Mi");
+                    Console.WriteLine("Range: " + NewRangeCharging + "Mi   (+" + RangeAdded + "Mi)");
+                    Console.WriteLine("Time until full: " + HUntilFull + "H " + MinUntilFull2 + "M");
+                    Console.WriteLine("Cost: " + LiveChargingCost + " cents");
                     System.Threading.Thread.Sleep(
                     (int)System.TimeSpan.FromSeconds(1).TotalMilliseconds);
                 }
@@ -452,6 +487,7 @@ namespace eBike_calculator
                     Console.WriteLine("** C H A R G E   C O M P L E T E **");
                     Console.WriteLine("**                               **");
                     Console.WriteLine("***********************************");
+                    Console.Beep();
                     Console.WriteLine("");
                     Console.WriteLine("Press enter to exit.");
                     Console.ReadLine();
